@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { getLocale } from "next-intl/server";
+import { NextIntlClientProvider } from "next-intl";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -21,7 +22,9 @@ export default async function RootLayout({
   const dir = locale === "ar" ? "rtl" : "ltr";
   return (
     <html lang={locale} dir={dir}>
-      <body className={`${dmSans.className} antialiased`}>{children}</body>
+      <NextIntlClientProvider>
+        <body className={`${dmSans.className} antialiased`}>{children}</body>
+      </NextIntlClientProvider>
     </html>
   );
 }

@@ -7,7 +7,6 @@ export default function Home() {
       <Button className="" variant={"elevated"}>
         hello
       </Button>
-
       <Input />
     </div>
   );
