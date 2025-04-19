@@ -1,5 +1,6 @@
 import { getPayload } from "payload";
 import configPromise from "@/payload.config";
+import { Category } from "@/payload-types";
 
 export default async function Home() {
   const payload = await getPayload({
@@ -8,7 +9,25 @@ export default async function Home() {
 
   const data = await payload.find({
     collection: "categories",
+    depth: 1,
+    pagination: false,
+    where: {
+      parent: {
+        equals: false,
+      },
+    },
   });
 
-  return <div className="">{JSON.stringify(data, null, 2)}</div>;
+  const formattedData = data.docs.map((doc) => ({
+    ...doc,
+    subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
+      // we should be safe here since we are using depth 1
+      ...(doc as Category),
+      subcategories: undefined,
+    })),
+  }));
+
+  console.log({ data });
+  console.log({ formattedData });
+  return <div className=""></div>;
 }
