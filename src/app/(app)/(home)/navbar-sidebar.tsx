@@ -1,15 +1,13 @@
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
-  SheetTrigger,
 } from "@/components/ui/sheet";
-import React from "react";
 import { useLocale } from "next-intl";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import Link from "next/link";
+import React from "react";
 interface NavbarItem {
   href: string;
   children: React.ReactNode;
