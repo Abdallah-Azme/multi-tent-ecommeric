@@ -27,7 +27,5 @@ export default async function Home() {
     })),
   }));
 
-  console.log({ data });
-  console.log({ formattedData });
   return <div className=""></div>;
 }

@@ -5,6 +5,7 @@ import React from "react";
 import Footer from "./footer";
 import Navbar from "./navbar";
 import SearchFilters from "./search-filters";
+import { CustomCategory } from "./types";
 
 export default async function HomeLayout({
   children,
@@ -22,9 +23,9 @@ export default async function HomeLayout({
         equals: false,
       },
     },
+    sort: "name",
   });
-
-  const formattedData = data.docs.map((doc) => ({
+  const formattedData: CustomCategory[] = data.docs.map((doc) => ({
     ...doc,
     subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({
       // we should be safe here since we are using depth 1
@@ -32,6 +33,7 @@ export default async function HomeLayout({
       subcategories: undefined,
     })),
   }));
+
   return (
     <section className="flex flex-col min-h-screen">
       <Navbar />

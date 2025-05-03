@@ -1,16 +1,18 @@
-import { json } from "stream/consumers";
-import SearchInput from "./search-input";
+import { CustomCategory } from "../types";
 import Categories from "./categories";
+import SearchInput from "./search-input";
 
 interface Props {
-  data: any;
+  data: CustomCategory[];
 }
 
 export default async function SearchFilters({ data }: Props) {
   return (
     <section className="container mx-auto">
-      <SearchInput />
-      <Categories data={data} />
+      <SearchInput data={data} />
+      <div className="hidden lg:block">
+        <Categories data={data} />
+      </div>
     </section>
   );
 }
