@@ -5,6 +5,7 @@ import { getLocale } from "next-intl/server";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { getQueryClient, trpc } from "@/trpc/server";
+import { Toaster } from "sonner";
 
 const dmSans = DM_Sans({
   subsets: ["latin"],
@@ -33,7 +34,10 @@ export default async function RootLayout({
     <html lang={locale} dir={dir}>
       <NextIntlClientProvider>
         <body className={`${dmSans.className} antialiased`}>
-          <TRPCReactProvider>{children}</TRPCReactProvider>
+          <TRPCReactProvider>
+            {children}
+            <Toaster />
+          </TRPCReactProvider>
         </body>
       </NextIntlClientProvider>
     </html>
