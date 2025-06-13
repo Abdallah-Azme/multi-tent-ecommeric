@@ -1,14 +1,13 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Poppins } from "next/font/google";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import React, { useState } from "react";
-import NavbarSidebar from "./navbar-sidebar";
-import { MenuIcon } from "lucide-react";
 import { useTRPC } from "@/trpc/client";
 import { useQuery } from "@tanstack/react-query";
+import { MenuIcon } from "lucide-react";
+import { Poppins } from "next/font/google";
+import Link from "next/link";
+import React, { useState } from "react";
+import NavbarSidebar from "./navbar-sidebar";
 const poppins = Poppins({
   weight: ["700"],
   subsets: ["latin"],
@@ -43,7 +42,6 @@ const navbarItems = [
 ];
 
 export default function Navbar() {
-  const pathname = usePathname();
   const trpc = useTRPC();
   const session = useQuery(trpc.auth.session.queryOptions());
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -52,7 +50,7 @@ export default function Navbar() {
       {/* home page */}
       <Link href={"/"} className="pl-6 flex items-center ">
         <span className={cn("text-5xl font-semibold ", poppins.className)}>
-          funroad 2
+          funroad
         </span>
       </Link>
 
