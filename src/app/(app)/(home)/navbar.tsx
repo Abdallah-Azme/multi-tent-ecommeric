@@ -52,7 +52,7 @@ export default function Navbar() {
       {/* home page */}
       <Link href={"/"} className="pl-6 flex items-center ">
         <span className={cn("text-5xl font-semibold ", poppins.className)}>
-          funroad
+          funroad 2
         </span>
       </Link>
 
