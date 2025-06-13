@@ -1,15 +1,14 @@
 "use client";
-import { Category } from "@/payload-types";
-import React, { useEffect, useRef, useState } from "react";
-import CategoryDropdown from "./category-dropdown";
-import { CustomCategory } from "../types";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { Category } from "@/payload-types";
 import { ListFilterIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import CategoriesSidebar from "./categories-sidebar";
+import CategoryDropdown from "./category-dropdown";
 
 interface Props {
-  data: CustomCategory[];
+  data: Category[];
 }
 
 export default function Categories({ data }: Props) {
@@ -17,15 +16,14 @@ export default function Categories({ data }: Props) {
   const measureRef = useRef<HTMLDivElement>(null);
   const viewAllRef = useRef<HTMLDivElement>(null);
 
-  const [visibleCount, setVisibleCount] = useState(data.length);
+  const [visibleCount, setVisibleCount] = useState(data?.length ?? 0);
   const [isAnyHovered, setIsAnyHovered] = useState(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const activeCategory = "all";
 
-  const activeCategoryIndex = data.findIndex(
-    (cat) => cat.slug === activeCategory
-  );
+  const activeCategoryIndex =
+    data?.findIndex((cat) => cat.slug === activeCategory) ?? -1;
 
   const isActiveCategoryHidden =
     activeCategoryIndex >= visibleCount && activeCategoryIndex !== -1;
@@ -61,23 +59,19 @@ export default function Categories({ data }: Props) {
     return () => {
       resizeObserver.disconnect();
     };
-  }, [data.length]);
+  }, [data?.length]);
 
   return (
     <div className="relative w-full ">
       {/* categories side bar */}
-      <CategoriesSidebar
-        open={isSidebarOpen}
-        onOpenChange={setIsSidebarOpen}
-        data={data}
-      />
+      <CategoriesSidebar open={isSidebarOpen} onOpenChange={setIsSidebarOpen} />
       {/*hidden div to measure the width of the items  */}
       <div
         className="absolute opacity-0 pointer-events-none "
         style={{ position: "fixed", top: -9999, left: -9999 }}
         ref={measureRef}
       >
-        {data.map((category: CustomCategory) => (
+        {data?.map((category) => (
           <div className="" key={category.id}>
             <CategoryDropdown
               category={category}
@@ -95,7 +89,7 @@ export default function Categories({ data }: Props) {
         onMouseEnter={() => setIsAnyHovered(true)}
         onMouseLeave={() => setIsAnyHovered(false)}
       >
-        {data.slice(0, visibleCount).map((category: CustomCategory) => (
+        {data?.slice(0, visibleCount).map((category) => (
           <div className="" key={category.id}>
             <CategoryDropdown
               category={category}

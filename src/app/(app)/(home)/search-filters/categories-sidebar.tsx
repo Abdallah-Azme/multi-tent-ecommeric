@@ -1,29 +1,33 @@
-import React, { useState } from "react";
-import { CustomCategory } from "../types";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Sheet,
   SheetContent,
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import { ScrollArea } from "@/components/ui/scroll-area";
+import { Category } from "@/payload-types";
+import { useTRPC } from "@/trpc/client";
+import { useQuery } from "@tanstack/react-query";
 import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 interface Props {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  data: CustomCategory[]; // Todo : Remove this later
 }
 
-export default function CategoriesSidebar({ data, open, onOpenChange }: Props) {
+export default function CategoriesSidebar({ open, onOpenChange }: Props) {
+  const trpc = useTRPC();
+  const { data } = useQuery(trpc.categories.getMany.queryOptions());
   console.log({ data });
   const router = useRouter();
-  const [parentCategories, setParentCategories] = useState<
-    CustomCategory[] | null
-  >(null);
-  const [selectedCategory, setSelectedCategory] =
-    useState<CustomCategory | null>(null);
+  const [parentCategories, setParentCategories] = useState<Category[] | null>(
+    null
+  );
+  const [selectedCategory, setSelectedCategory] = useState<Category | null>(
+    null
+  );
 
   // if there is a child category show them, else show the parent category
 
@@ -35,9 +39,9 @@ export default function CategoriesSidebar({ data, open, onOpenChange }: Props) {
     onOpenChange(open);
   };
 
-  const handelCategoryClick = (category: CustomCategory) => {
-    if (category.subcategories && category.subcategories.length > 0) {
-      setParentCategories(category.subcategories as CustomCategory[]);
+  const handelCategoryClick = (category: Category) => {
+    if (category.subcategories && category.subcategories?.length > 0) {
+      setParentCategories(category.subcategories as Category[]);
       setSelectedCategory(category);
     } else {
       // this is leaf category
