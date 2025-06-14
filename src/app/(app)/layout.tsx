@@ -4,6 +4,8 @@ import { NextIntlClientProvider } from "next-intl";
 import { getLocale } from "next-intl/server";
 import { DM_Sans } from "next/font/google";
 import { Toaster } from "sonner";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
+
 import "./globals.css";
 
 const dmSans = DM_Sans({
@@ -27,10 +29,12 @@ export default async function RootLayout({
     <html lang={locale} dir={dir}>
       <NextIntlClientProvider>
         <body className={`${dmSans.className} antialiased`}>
-          <TRPCReactProvider>
-            {children}
-            <Toaster />
-          </TRPCReactProvider>
+          <NuqsAdapter>
+            <TRPCReactProvider>
+              {children}
+              <Toaster />
+            </TRPCReactProvider>
+          </NuqsAdapter>
         </body>
       </NextIntlClientProvider>
     </html>
