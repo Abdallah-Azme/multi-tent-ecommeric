@@ -4,6 +4,7 @@ import { ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import React, { useState } from "react";
 import PriceFilter from "./price-filter";
 import { useProductsFilter } from "../../hooks/use-products-filter";
+import TagsFilter from "./tags-filter";
 
 interface ProductFiltersProps {
   title: string;
@@ -33,6 +34,28 @@ function ProductFilter({ children, title, className }: ProductFiltersProps) {
 export default function ProductFilters({}) {
   const [filters, setFilters] = useProductsFilter();
 
+  const hasAnyFilters = Object.entries(filters).some(([key, value]) => {
+    if (key === "sort") return false;
+
+    if (Array.isArray(value)) {
+      return value.length > 0;
+    }
+
+    if (typeof value === "string") {
+      return value !== "";
+    }
+    return value !== null;
+  });
+
+  console.log({ hasAnyFilters });
+  const onClear = () => {
+    setFilters({
+      minPrice: "",
+      maxPrice: "",
+      tags: [],
+    });
+  };
+
   const onChange = (key: keyof typeof filters, value: unknown) => {
     setFilters((prev) => {
       return {
@@ -45,16 +68,28 @@ export default function ProductFilters({}) {
     <div className="border rounded-md bg-white">
       <div className="p-4 border-b flex items-center justify-between">
         <p className="font-medium ">Filters</p>
-        <button className="underline" onClick={() => {}} type="button">
-          Clear
-        </button>
+        {hasAnyFilters && (
+          <button
+            className="underline cursor-pointer"
+            onClick={onClear}
+            type="button"
+          >
+            Clear
+          </button>
+        )}
       </div>
-      <ProductFilter title="Price" className="border-b-0">
+      <ProductFilter title="Price" className="">
         <PriceFilter
           minPrice={filters.minPrice}
           maxPrice={filters.maxPrice}
           onMinPriceChange={(price) => onChange("minPrice", price)}
           onMaxPriceChange={(price) => onChange("maxPrice", price)}
+        />
+      </ProductFilter>
+      <ProductFilter title="tags" className="border-b-0">
+        <TagsFilter
+          value={filters.tags}
+          onChange={(tags) => onChange("tags", tags)}
         />
       </ProductFilter>
     </div>

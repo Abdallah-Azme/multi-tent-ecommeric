@@ -5,7 +5,6 @@ export const categoriesRouter = createTRPCRouter({
   getMany: baseProcedure.query(async ({ ctx }) => {
     const data = await ctx.db.find({
       collection: "categories",
-      limit: 1,
       depth: 1,
       pagination: false,
       where: {
@@ -15,7 +14,7 @@ export const categoriesRouter = createTRPCRouter({
       },
       sort: "name",
     });
-
+    console.log("data", JSON.stringify(data));
     const formattedData = data.docs.map((doc) => ({
       ...doc,
       subcategories: (doc.subcategories?.docs ?? []).map((doc) => ({

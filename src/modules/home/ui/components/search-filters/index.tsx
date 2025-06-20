@@ -12,6 +12,8 @@ export default function SearchFilters() {
   const { data } = useSuspenseQuery(trpc.categories.getMany.queryOptions());
   const params = useParams();
 
+  console.log({ data });
+
   const categoryParam = params.category as string | undefined;
   const activeCategory = categoryParam || "all";
 
