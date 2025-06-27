@@ -5,12 +5,19 @@ import { useProductsFilter } from "../../hooks/use-products-filter";
 import ProductCard, { ProductCardSkelton } from "./product-card";
 import { Button } from "@/components/ui/button";
 import { InboxIcon } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 interface Props {
   category?: string;
+  tenantSlug?: string;
+  narrowView?: boolean;
 }
 
-export default function ProductList({ category }: Props) {
+export default function ProductList({
+  category,
+  tenantSlug,
+  narrowView,
+}: Props) {
   const [filters] = useProductsFilter();
   const trpc = useTRPC();
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage } =
@@ -19,6 +26,7 @@ export default function ProductList({ category }: Props) {
         {
           category,
           ...filters,
+          tenantSlug,
           limit: Number(
             process.env.NEXT_PUBLIC_NUMBER_OF_PAGNATIED_ITEMES_PER_PAGE
           ),
@@ -43,7 +51,12 @@ export default function ProductList({ category }: Props) {
 
   return (
     <>
-      <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+      <div
+        className={cn(
+          "grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
+          narrowView && "lg:grid-cols-2 xl:grid-cols-3"
+        )}
+      >
         {data.pages
           .flatMap((page) => page.docs)
           .map((product) => (
@@ -52,8 +65,8 @@ export default function ProductList({ category }: Props) {
               id={product.id}
               name={product.name}
               imageUrl={product.image?.url}
-              authorUsername={"abdallah"}
-              authorImageUrl={undefined}
+              tenantSlug={product.tenant.slug}
+              tenantImageUrl={product.tenant.image?.url}
               reviewRating={3}
               reviewCount={5}
               price={product.price}
@@ -77,9 +90,14 @@ export default function ProductList({ category }: Props) {
   );
 }
 
-export function ProductListSkelton() {
+export function ProductListSkelton({ narrowView }: { narrowView?: boolean }) {
   return (
-    <div className="grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
+    <div
+      className={cn(
+        "grid sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4",
+        narrowView && "lg:grid-cols-2 xl:grid-cols-3"
+      )}
+    >
       {Array.from({
         length: Number(
           process.env.NEXT_PUBLIC_NUMBER_OF_PAGNATIED_ITEMES_PER_PAGE
