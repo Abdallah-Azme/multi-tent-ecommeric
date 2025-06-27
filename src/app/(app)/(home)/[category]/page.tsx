@@ -15,10 +15,13 @@ export default async function Page({ params, searchParams }: Props) {
   const { category } = await params;
   const filters = await loadProductsFilters(searchParams);
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(
-    trpc.products.getMany.queryOptions({
-      category,
+  void queryClient.prefetchInfiniteQuery(
+    trpc.products.getMany.infiniteQueryOptions({
       ...filters,
+      category,
+      limit: Number(
+        process.env.NEXT_PUBLIC_NUMBER_OF_PAGNATIED_ITEMES_PER_PAGE
+      ),
     })
   );
   return (

@@ -4,13 +4,11 @@ import Link from "next/link";
 interface SubcategoryMenuProps {
   category: Category;
   isOpen: boolean;
-  position: { top: number; left: number };
 }
 
 export default function SubcategoryMenu({
   category,
   isOpen,
-  position,
 }: SubcategoryMenuProps) {
   if (
     !isOpen ||
@@ -22,10 +20,10 @@ export default function SubcategoryMenu({
   const backgroundColor = category.color || "#f5f5f5";
   return (
     <div
-      className="fixed z-100 "
+      className="absolute z-100 "
       style={{
-        top: position.top,
-        left: position.left,
+        top: "100%",
+        left: 0,
       }}
     >
       {/* bridge between the drop down menu and the button itself  */}

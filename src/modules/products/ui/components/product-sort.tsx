@@ -1,8 +1,7 @@
 "use client";
-import React from "react";
-import { useProductsFilter } from "../../hooks/use-products-filter";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useProductsFilter } from "../../hooks/use-products-filter";
 
 export default function ProductSort() {
   const [filters, setFilters] = useProductsFilter();
