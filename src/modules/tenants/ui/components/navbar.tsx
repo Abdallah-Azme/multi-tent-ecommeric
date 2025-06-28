@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
+import CheckoutButton from "@/modules/checkout/ui/components/checkout-button";
+
 interface Props {
   slug: string;
 }
@@ -36,6 +38,7 @@ export default function Navbar({ slug }: Props) {
           )}
           <p className="text-xl">{data.name}</p>
         </Link>
+        <CheckoutButton tenantSlug={slug} hideIfEmpty />
       </div>
     </nav>
   );
